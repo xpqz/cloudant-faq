@@ -45,31 +45,25 @@ Collection of questions and answers gathered in the line of duty
 1. What is an easy way to delete a local copy of the document without removing the “original” doc from the server?  
 ```There is no good solution to this right now. Internally we have a purge function that does this, but it’s not currently exposed - although if there is a need for this we would consider exposing it.```
 
-1. Do you have version management for the document conflict resolution on the mobile side?  
-```No```
+1. Do you have version management for the document conflict resolution on the mobile side? `No`
 
-1. Any support for websocket transport for iOS and Android?  
-```No```
+1. Any support for websocket transport for iOS and Android? `No`
 
 1. Do you offer Ipv6 support?  
 ```We effectively rely on the underlying HTTP/ip libraries to resolve this for us.```
 
-1. Is there a C SDK for mobile?  
-```No```
+1. Is there a C SDK for mobile? `No`
 
 1. How does Cloudant support PouchDB?  
 ```PouchDB is tested, and works with Cloudant. IBM does not officially offer support for PouchDB, but we do strive to maintain compatibility and have committed patches to improve compatibility between Cloudant and PouchDB. We view PouchDB as a vital part of the larger CouchDB ecosystem.```
 
 1. How is client redundancy achieved?  
-```To maintain the ability of a client to sync data we typically use two or more geographically distributed clusters which sync data with each other, thereby allowing clients to talk to either cluster in case the other is unreachable.
-
-    - This can be supported by transparent redirection on the server side
-    - or a device can explicitly replicate with more than one cluster```
+```To maintain the ability of a client to sync data we typically use two or more geographically distributed clusters which sync data with each other, thereby allowing clients to talk to either cluster in case the other is unreachable. This can be supported by transparent redirection on the server side or a device can explicitly replicate with more than one cluster```
+    
 1. What authentication and authorization mechanisms are provided for mobile users to connect to the server?  
 ```At the moment we support HTTP-basic-auth over HTTPS. We’re currently working on other auth mechanisms.```
 
-1. Does Cloudant support digest based authentication for sync?  
-```No```
+1. Does Cloudant support digest based authentication for sync?  `No`
 
 1. Does Cloudant support cross data center replication and clusters?  
 ```We do support cross-datacenter replication. Typically we recommend that clients do not have clusters that span multiple data centres, but instead have multiple clusters that replicate between them. However, we do support clusters spanning multiple data centres using zones to ensure each data centre have at least one complete replica.```
