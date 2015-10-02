@@ -61,7 +61,7 @@ Collection of questions and answers gathered in the line of duty
 ```To maintain the ability of a client to sync data we typically use two or more geographically distributed clusters which sync data with each other, thereby allowing clients to talk to either cluster in case the other is unreachable. This can be supported by transparent redirection on the server side or a device can explicitly replicate with more than one cluster```
     
 1. What authentication and authorization mechanisms are provided for mobile users to connect to the server?  
-```At the moment we support HTTP-basic-auth over HTTPS. We’re currently working on other auth mechanisms.```
+```At the moment we support HTTP-basic-auth and session cookies over HTTPS. We’re currently working on other auth mechanisms.```
 
 1. Does Cloudant support digest based authentication for sync?  `No`
 
