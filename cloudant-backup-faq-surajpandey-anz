@@ -1,0 +1,21 @@
+
+1.  Are all changes during a day recorded as deltas for the end of day rollup? Or only first and last values? e.g. if a single attribute in a document has its value changed 3 times during one day, can the second value be restored via the history in the dashboard? Or can only the value from the start of the day be recovered?
+
+2.  For the purposes of data patching, how easy is it to instantiate a copy of a database or set of documents from an earlier point in time? e.g. An update has set all attributes for accessed documents to a common value. How do we restore a second copy of the database at a point in time preceding the update to patch the attribute without losing any changes to the other attributes?
+
+3.  Can we restore the database or a document to any point in time during the day before the end of day roll up of deltas?
+
+4. Some questions on roll-ups:
+ 
+
+    Are we able to configure a roll up policy to stagger our recoverability timeframe options? Can we configure our roll-ups so to provide a recovery framework (similar to the a Tivoli TSM expiry policy) e.g.
+    Today – 7 days: End of day backup available
+    Today – (7 days to 1 month): End of week backup available
+    Today – (1 month to 7 years): End of month backup available
+
+ 
+
+    Given a considerable disk cost associated with retaining end of day backups without rolling up to week and higher backup sets. 
+    Is there any formula to enable us to calculate the storage volumes for different recovery granularity scenarios?
+ 
+ 
