@@ -49,7 +49,7 @@
 1. _Do you have version management for the document conflict resolution on the mobile side?_ 
     No.
 
-1. _Any support for websocket transport for iOS and Android? 
+1. _Any support for websocket transport for iOS and Android?_ 
     No.
 
 1. _Do you offer Ipv6 support?_  
@@ -144,7 +144,27 @@
 
     Cloudant supports geo-spatial querying and supports GeoJSON, GeoPackage and Web Feature Services. A good introductory overview can be found in the [Cloudant Geo Overview](https://ibm.box.com/cloudant-geo-overview), and details of the geo-spatial API can be found [here.](https://cloudant.com/wp-content/uploads/Cloudant-Geospatial-API-documentation.pdf)
 
+1. _How does Cloudant compare with KONY? KONY claims to offer automatic, rules based conflict resolution and easy sync with traditional RDBMSs._
 
+    KONY is an enterprise mobile app stack similar to IBM MobileFirst. Some technical (but a few years old) information about KONY can be found here:
+
+    http://developer.kony.com/twiki/pub/Portal/Sync/5.0.7/Quick%20Overview%20of%20the%20Kony%20Sync%20Framework.pdf
+
+    On the face of it, KONY doesn't seem to require developers to deal with conflicts and consistency issues like you do in Cloudant. Why can't Cloudant offer something similar?
+
+    KONY makes a different set of trade-offs around the CAP theorem. The KONY server is a non-distributed 'spider in the net' analogous to the MobileFirst Worklight server which talks to an enterprise RDBMS on one side, and the devices on the other. Having a strongly consistent SoR as the source of truth makes certain things easier – and other things hard (or impossible). As the KONY server is (somewhat simplified) a single point, it can define a reliable, strictly increasing sequence (or a time stamp) for updates. Of course, conflicts can still occur between updates from the devices, and updates performed directly on the server, but these can now be resolved through a set of rules (e.g. server always wins, or reject-reload on conflict etc). 
+
+    Cloudant is an AP system without consistency guarantees. In the KONY case, there is a single source of truth. Think of it as a hub-spoke (with the KONY server as the hub) topology. Cloudant's topology is a fully connected set of identical nodes - no single source of truth. In KONY's case, the data store is ACID-compliant: strongly consistent. No conflicts can exist in the data store. In Cloudant, conflicts may exist in the cluster itself as a consequence of replication. 
+
+    In essence, KONY is CP, Cloudant is AP. KONY's weaknesses will be a lack of scalability (all traffic funnelled through the KONY server), a lack of availability (no easy scaleout of the KONY server, as backend is CP). KONY does recognise this, and offers a mode of operation which has a separate 'book keeping' database on the KONY server for cases where the SoR is unavailable – this gives some redundancy in case of network partitions, but offers no real high availability or scalability: it's replacing one CP system with another.
+
+    Could Cloudant resolve conflicts in a similar way to KONY? Yes and no, is the somewhat unhelpful answer. It would be harder to make something for Cloudant that could be driven by a simple, generic rule set that would fit all use cases. However, Cloudant has a comprehensive API for detecting and resolving conflicts. It would be perfectly possible to devise a backend service that would query the cluster for conflicted documents, and apply a business logic based resolution strategy. Cloudant allows you to _defer_ conflict resolution to where it makes the most sense for it to be handled. We recognise that a proper, safe conflict resolution strategy must involve some degree of semantic understanding of the data. A conflict is basically two differing versions of the same record. The database cannot safely divine which is right, or which is wrong.
+
+    Isn't the KONY approach better?
+
+    It is certainly easier to grasp for a developer used to deal with RDBMSs. If this means it's better or not depends on your application, your data, and your budget. If your application relies on strong consistency guarantees, Cloudant is a poor fit as the data store. However, if your application relies on your data always being available, or the cost of downtime is high, Cloudant would be ideal.
+
+    Eventual consistency is hard to grasp in practice, even where developers do understand the concepts. Most developers that are used to RDBMSs would instinctively expect that if you write a record successfully, you can read it immediately and get it back. This cannot safely be relied upon in an eventually consistent database. This is complicated by the fact that in normal operation, or under test conditions the inconsistency window is so short compared with the network latency of the requests that problems may not occur. But it is always there, and greater than zero.
 
 
 
